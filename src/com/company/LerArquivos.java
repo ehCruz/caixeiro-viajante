@@ -10,13 +10,14 @@ public class LerArquivos {
 
     private static File file;
 
-    public static List lerLinhasDoArquivo(String filePath) {
+    public static List<Integer> lerLinhasDoArquivo(String filePath) {
         LerArquivos.file = new File(filePath);
-        List<String> linhas = new ArrayList<>();
+        List<Integer> linhas = new ArrayList<>();
         try {
             Scanner sc = new Scanner(LerArquivos.file);
             while (sc.hasNextLine()) {
-                linhas.add(sc.nextLine());
+//                linhas.add(sc.nextLine());
+                linhas.add(LerArquivos.tratarDadosArquivo(sc.nextLine()));
             }
             sc.close();
             return linhas;
@@ -26,4 +27,11 @@ public class LerArquivos {
         return null;
     }
 
+    private static int tratarDadosArquivo(String linha) {
+        String dadosLinha[] = linha.split(";");
+        Integer origem = Integer.parseInt(dadosLinha[0]);
+        Integer destino = Integer.parseInt(dadosLinha[1]);
+        Integer peso = Integer.parseInt(dadosLinha[2]);
+        return peso;
+    }
 }

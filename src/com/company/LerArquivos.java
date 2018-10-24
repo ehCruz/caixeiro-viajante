@@ -9,29 +9,24 @@ import java.util.Scanner;
 public class LerArquivos {
 
     private static File file;
+    static int[][] a = new int[36][3];
 
-    public static List<Integer> lerLinhasDoArquivo(String filePath) {
+    public static int[][] lerLinhasDoArquivo(String filePath) {
         LerArquivos.file = new File(filePath);
-        List<Integer> linhas = new ArrayList<>();
+        String[] dadosLinha;
         try {
             Scanner sc = new Scanner(LerArquivos.file);
-            while (sc.hasNextLine()) {
-//                linhas.add(sc.nextLine());
-                linhas.add(LerArquivos.tratarDadosArquivo(sc.nextLine()));
+            for (int i = 0; i < a.length; i++) {
+                dadosLinha = sc.nextLine().split(";");
+                a[i][0] = Integer.parseInt(dadosLinha[0]);
+                a[i][1] = Integer.parseInt(dadosLinha[1]);
+                a[i][2] = Integer.parseInt(dadosLinha[2]);
             }
             sc.close();
-            return linhas;
+            return a;
         } catch (FileNotFoundException e) {
             System.out.println("Arquivo nao encontrado, verifique se o caminho do arquivo esta correto");
         }
         return null;
-    }
-
-    private static int tratarDadosArquivo(String linha) {
-        String dadosLinha[] = linha.split(";");
-        Integer origem = Integer.parseInt(dadosLinha[0]);
-        Integer destino = Integer.parseInt(dadosLinha[1]);
-        Integer peso = Integer.parseInt(dadosLinha[2]);
-        return peso;
     }
 }

@@ -30,7 +30,7 @@ public class Dijkstra {
         }
         dist[origem - 1] = 0;
 
-        // Ideia de parentes foi pega de outro site, que facilitou a implementacao
+        // Ideia de parents foi pega de outro site, que facilitou a implementacao
         int[] parents = new int[numVertices];
         parents[origem - 1] = -1;
 
@@ -56,22 +56,23 @@ public class Dijkstra {
                 }
             }
         }
-        printSolution(destino, origem - 1, dist, parents);
+        printSolution(destino, origem -1, dist, prev, parents);
     }
 
-    private static void printSolution(int destino, int origem, int[] dist, int[] parents) {
+    private static void printSolution(int destino, int origem, int[] dist, boolean[] prev, int[] parents) {
         System.out.println("Caminho de volta usando o algoritmo de Dijkstra");
         System.out.printf("Caminho                      Custo%n");
         String caminho = (destino + 1) + " -> ";
         if (destino != origem) {
-            for (int i = parents.length - 1; i >= 0; i--) {
-                if (parents[i] != -1 && parents[i] != 0) {
-                    caminho += (parents[i] + 1) + " -> ";
+            for (int i = prev.length - 1; i >= 0; i--) {
+                if (prev[i] && parents[i] != origem) {
+                    if (parents[i] != -1 && parents[i] != 0) {
+                        caminho += (parents[i] + 1) + " -> ";
+                    }
                 }
             }
             caminho += (origem + 1);
-            System.out.printf("%14s             %d%n%n", caminho, dist[destino]);
+            System.out.printf("%s             %d%n%n", caminho, dist[destino]);
         }
     }
-
 }

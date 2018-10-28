@@ -19,7 +19,7 @@ public class Greedy {
      *
      * @param pontoDePartida - vertice de partida
      */
-    public static void roteamento(int[][] pesos,int pontoDePartida) {
+    public static void roteamento(int[][] pesos, int pontoDePartida) {
         if (pontoDePartida > 0 && pontoDePartida <= 6) {
             System.out.println("Caminho de ida usando um algoritmo do tipo greedy:");
             custoDaViagem = 0;
@@ -32,6 +32,7 @@ public class Greedy {
                 cont++;
             }
             exibirCaminho();
+            Dijkstra.dijkstraTopzeira(pesos, pontoDePartida, visited.get(visited.size() - 2));
         } else {
             System.out.println("Ponto de partida informado e invalido");
         }
@@ -69,10 +70,10 @@ public class Greedy {
         String path = "";
         for (int i = 0; i < visited.size() - 1; i++) {
             path += visited.get(i) + 1;
-            if(i != Main.NUM_VERTICE - 1) {
+            if (i != Main.NUM_VERTICE - 1) {
                 path += " -> ";
             }
         }
-        System.out.printf("%s   %d%n%n",path, custoDaViagem);
+        System.out.printf("%s   %d%n%n", path, custoDaViagem);
     }
 }

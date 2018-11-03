@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Classe auxiliar usada para calcular de forma "gulosa"(com baixa precisao) o melhor caminho
+ * Classe auxiliar usada para calcular de "forma bruta"(com baixa precisao) o melhor caminho
  * para percorrer todas as vertices de um grafo nao direcionado
  *
  * @author Eduardo Henrique Cruz
@@ -13,6 +13,7 @@ public class Greedy {
 
     private static List<Integer> visited = new ArrayList<>();
     private static int custoDaViagem = 0;
+    private static int[][] pesos;
 
     /**
      * <h1>Inicia um novo roteamento</h1>
@@ -20,6 +21,7 @@ public class Greedy {
      * @param pontoDePartida - vertice de partida
      */
     public static void roteamento(int[][] pesos, int pontoDePartida) {
+        Greedy.pesos = pesos;
         if (pontoDePartida > 0 && pontoDePartida <= 6) {
             System.out.println("Caminho de ida usando um algoritmo do tipo greedy:");
             custoDaViagem = 0;
@@ -28,11 +30,11 @@ public class Greedy {
             int aux = pontoDePartida - 1;
             visited.add(aux);
             while (cont < Main.NUM_VERTICE) {
-                aux = calculoGreedy(pesos, aux);
+                aux = calculoGreedy(aux);
                 cont++;
             }
             exibirCaminho();
-            Dijkstra.dijkstraTopzeira(pesos, pontoDePartida, visited.get(visited.size() - 2));
+//            Dijkstra.dijkstraTopzeira(pesos, pontoDePartida, visited.get(visited.size() - 2));
         } else {
             System.out.println("Ponto de partida informado e invalido");
         }
@@ -42,22 +44,21 @@ public class Greedy {
      * <h1>Metodo para verificar e calcular o melhor caminho</h1>
      * <p>Foi construido um metodo greedy para encontrar o possivel melhor caminho</p>
      *
-     * @param pesos - matriz a ser percorrida
-     * @param linha - A linha em que as colunas serão percorridas
+     * @param linha - A linha em que as colunas serao percorridas
      * @return - a proxima linha a ser analisada
      */
-    private static int calculoGreedy(int[][] pesos, int linha) {
+    private static int calculoGreedy(int linha) {
         int menorCaminho = Integer.MAX_VALUE;
         int caminho = 0;
         for (int i = 0; i < Main.NUM_VERTICE; i++) {
             if (linha != i) {
-                if (pesos[linha][i] < menorCaminho && !(visited.contains(i))) {
-                    menorCaminho = pesos[linha][i];
+                if (Greedy.pesos[linha][i] < menorCaminho && !(visited.contains(i))) {
+                    menorCaminho = Greedy.pesos[linha][i];
                     caminho = i;
                 }
             }
         }
-        custoDaViagem += pesos[linha][caminho];
+        custoDaViagem += Greedy.pesos[linha][caminho];
         visited.add(caminho);
         return caminho;
     }

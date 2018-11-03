@@ -20,22 +20,20 @@ public class Dijkstra {
      * @param origem - ponto de saida
      */
     public static void dijkstraTopzeira(int[][] grafo, int origem, int destino) {
-        int numVertices = grafo[0].length;
+        int numVertices = Main.NUM_VERTICE;
         int[] dist = new int[numVertices];
         boolean[] prev = new boolean[numVertices];
-
         for (int i = 0; i < Main.NUM_VERTICE; i++) {
             dist[i] = INFINITO;
             prev[i] = false;
         }
         dist[origem - 1] = 0;
-
         // Ideia de parents foi pega de outro site, que facilitou a implementacao
         int[] parents = new int[numVertices];
         parents[origem - 1] = -1;
-
         int maisProximo = -1;
         int menorDistancia = INFINITO;
+
         for (int i = 0; i < numVertices; i++) {
             maisProximo = -1;
             menorDistancia = INFINITO;
@@ -45,9 +43,7 @@ public class Dijkstra {
                     menorDistancia = dist[j];
                 }
             }
-
             prev[maisProximo] = true;
-
             for (int j = 0; j < numVertices; j++) {
                 int aresta = grafo[maisProximo][j];
                 if (aresta > 0 && ((menorDistancia + aresta) < dist[j])) {
@@ -56,12 +52,11 @@ public class Dijkstra {
                 }
             }
         }
-        printSolution(destino, origem -1, dist, prev, parents);
+        exibirSolucao(destino, origem - 1, dist, prev, parents);
     }
 
-    private static void printSolution(int destino, int origem, int[] dist, boolean[] prev, int[] parents) {
-        System.out.println("Caminho de volta usando o algoritmo de Dijkstra");
-        System.out.printf("Caminho                      Custo%n");
+    private static void exibirSolucao(int destino, int origem, int[] dist, boolean[] prev, int[] parents) {
+        System.out.print("- Volta Dijkstra ");
         String caminho = (destino + 1) + " -> ";
         if (destino != origem) {
             for (int i = prev.length - 1; i >= 0; i--) {
@@ -72,7 +67,7 @@ public class Dijkstra {
                 }
             }
             caminho += (origem + 1);
-            System.out.printf("%s             %d%n%n", caminho, dist[destino]);
+            System.out.printf("soma %d%n",  dist[destino]);
         }
     }
 }

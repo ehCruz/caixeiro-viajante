@@ -7,6 +7,7 @@ import java.util.Queue;
 
 public class Combinatorio {
     private static List<List<Integer>> listaCaminhos = new ArrayList<>();
+
     /**
      * Algoritmo gerador das combinacoes - BSF
      *

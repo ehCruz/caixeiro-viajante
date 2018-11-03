@@ -12,62 +12,73 @@ package com.company;
 public class Dijkstra {
 
     private static final int INFINITO = Integer.MAX_VALUE;
+    private static int numVertices;
 
     /**
-     * Algoritmo de Dijkstra topzeira rodando em O(|V|^2)
+     * Algoritmo de Dijkstra
      *
-     * @param grafo  - grafo com os dados
+     * @param graph  - grafo com os dados
      * @param origem - ponto de saida
+     * @return valor(distancia) total do menos caminho
      */
-    public static void dijkstraTopzeira(int[][] grafo, int origem, int destino) {
-        int numVertices = Main.NUM_VERTICE;
+    public static int dijkstra(int[][] graph, int origem, int destino) {
+        numVertices = graph.length;
         int[] dist = new int[numVertices];
         boolean[] prev = new boolean[numVertices];
-        for (int i = 0; i < Main.NUM_VERTICE; i++) {
+        // Ira guardar a arvore com todos os caminhos, consequentemente o menor
+        int[] menorCaminho = new int[numVertices];
+
+        for (int i = 0; i < numVertices; i++) {
             dist[i] = INFINITO;
             prev[i] = false;
         }
-        dist[origem - 1] = 0;
-        // Ideia de parents foi pega de outro site, que facilitou a implementacao
-        int[] parents = new int[numVertices];
-        parents[origem - 1] = -1;
-        int maisProximo = -1;
-        int menorDistancia = INFINITO;
 
-        for (int i = 0; i < numVertices; i++) {
-            maisProximo = -1;
-            menorDistancia = INFINITO;
+        dist[origem] = 0;
+        menorCaminho[origem] = -1;
+
+        for (int i = 0; i < numVertices - 1; i++) {
+            int u = minVertice(prev, dist);
+            prev[u] = true;
+
             for (int j = 0; j < numVertices; j++) {
-                if (!prev[j] && dist[j] < menorDistancia) {
-                    maisProximo = j;
-                    menorDistancia = dist[j];
-                }
-            }
-            prev[maisProximo] = true;
-            for (int j = 0; j < numVertices; j++) {
-                int aresta = grafo[maisProximo][j];
-                if (aresta > 0 && ((menorDistancia + aresta) < dist[j])) {
-                    parents[j] = maisProximo;
-                    dist[j] = menorDistancia + aresta;
+                if (!prev[j] && graph[u][j] != 0 && dist[u] != INFINITO && (dist[u] + graph[u][j] < dist[j])) {
+                    menorCaminho[j] = u;
+                    dist[j] = dist[u] + graph[u][j];
                 }
             }
         }
-        exibirSolucao(destino, origem - 1, dist, prev, parents);
+        exibirMenorCaminho(destino, menorCaminho);
+        System.out.printf("Soma %d", dist[destino]);
+        return dist[destino];
     }
 
-    private static void exibirSolucao(int destino, int origem, int[] dist, boolean[] prev, int[] parents) {
-        System.out.print("- Volta Dijkstra ");
-        String caminho = (destino + 1) + " -> ";
-        if (destino != origem) {
-            for (int i = prev.length - 1; i >= 0; i--) {
-                if (prev[i] && parents[i] != origem) {
-                    if (parents[i] != -1 && parents[i] != 0) {
-                        caminho += (parents[i] + 1) + " -> ";
-                    }
-                }
+    /**
+     * @param prev vertices que ja foram percorridas
+     * @param dist distancias
+     * @return a menor vertice
+     */
+    private static int minVertice(boolean[] prev, int[] dist) {
+        int min = INFINITO;
+        int menorIndex = -1;
+
+        for (int i = 0; i < numVertices; i++) {
+            if (!prev[i] && dist[i] <= min) {
+                min = dist[i];
+                menorIndex = i;
             }
-            caminho += (origem + 1);
-            System.out.printf("soma %d%n",  dist[destino]);
         }
+        return menorIndex;
+    }
+
+    /**
+     * @param destino      sempre recebe a proxima vertice do menor caminho, ate cheagar em -1
+     * @param menorCaminho array com todos os caminhos
+     */
+    private static void exibirMenorCaminho(int destino, int[] menorCaminho) {
+        if (destino == -1) {
+            return;
+        }
+        exibirMenorCaminho(menorCaminho[destino], menorCaminho);
+        System.out.printf("%d - ", (destino + 1));
     }
 }

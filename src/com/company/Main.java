@@ -13,7 +13,7 @@ public class Main {
     }
 
     private void processar() {
-        this.pesos = LerArquivos.lerLinhasDoArquivo("C:\\Users\\Eduardo Cruz\\IdeaProjects\\caixeiro-viajante\\Arquivos\\Rota01.txt");
+        this.pesos = LerArquivos.lerLinhasDoArquivo("Rota01.txt");
         int op;
         while (true) {
             System.out.println("1- Selecionar Arquivo\n" +
